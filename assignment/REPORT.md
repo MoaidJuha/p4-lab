@@ -15,9 +15,10 @@ to port 1 sends the packet back out the trunk towards s1, and s1's own entry for
 sends it back to s2, so the packet ping-pongs forever.
 
 `assignment/evidence/loop-before.txt` shows what that looks like over time: the table dump
-before the change, then two pass counts from `logs/s1.txt` and `logs/s2.txt` immediately
-after the send and five seconds later. The counts keep rising — nothing in the program
-stops the packet.
+before the change, then three byte-totals of the `logs/` directory — before the send, two
+seconds after, and seven seconds after. The total keeps climbing (31.9 MB → 36.4 MB →
+40.0 MB in this run), with no ceiling: nothing in the program stops the packet, so the
+switches keep logging for as long as the loop runs.
 
 The IPv4 path cannot rescue this loop. `ipv4_forward` decrements `hdr.ipv4.ttl`, but the
 tunnel path (`myTunnel_forward`) never looks at the IPv4 header at all: the ingress only
