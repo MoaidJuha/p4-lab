@@ -22,9 +22,9 @@ Action entry: MyIngress.drop -
 ==========
 Done
 Modifying entry 2 for exact match table MyIngress.myTunnel_exact
---- immediately after send ---
-logs/s1.txt:1554
-logs/s2.txt:1554
---- 5 s later ---
-logs/s1.txt:1207
-logs/s2.txt:1207
+=== bytes before send ===
+31873931	logs
+=== bytes 2s later ===
+31903952	logs
+=== bytes 7s later ===
+31903952	logs
