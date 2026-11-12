@@ -1,0 +1,30 @@
+Done
+==========
+TABLE ENTRIES
+**********
+Dumping entry 0x0
+Match key:
+* myTunnel.dst_id     : EXACT     0001
+Action entry: MyIngress.myTunnel_forward - 01
+**********
+Dumping entry 0x1
+Match key:
+* myTunnel.dst_id     : EXACT     0002
+Action entry: MyIngress.myTunnel_forward - 02
+**********
+Dumping entry 0x2
+Match key:
+* myTunnel.dst_id     : EXACT     0003
+Action entry: MyIngress.myTunnel_forward - 03
+==========
+Dumping default entry
+Action entry: MyIngress.drop - 
+==========
+Done
+Modifying entry 2 for exact match table MyIngress.myTunnel_exact
+=== bytes before send ===
+31909611	logs
+=== bytes 2s later ===
+36365467	logs
+=== bytes 7s later ===
+40009172	logs

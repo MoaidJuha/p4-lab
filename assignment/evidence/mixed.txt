@@ -1,0 +1,44 @@
+]633;E;echo "===== Mixed rollout: s1=tunnel.p4 (hop limit), s2=tunnel_v1.p4 (old) =====";b66d8b27-acef-43fc-988c-18e3d1cf57ec]633;C===== Mixed rollout: s1=tunnel.p4 (hop limit), s2=tunnel_v1.p4 (old) =====
+
+----- Prediction -----
+s2 reads 4 bytes as tunnel header, hop_limit byte shifted into IPv4 header.
+Delivery expected to fail or arrive mangled. Loop still ends (s1 decrements).
+
+----- tcpdump on h2 during --tunnel 2 delivery -----
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on h2-eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+
+----- h2 receive log after delivery -----
+Listening on h2-eth0...
+WARNING: Socket <scapy.arch.linux.L2ListenSocket object at 0x7da961cf8f20> failed with '[Errno 100] Network is down'. It was closed.
+
+----- Mixed loop: byte growth then freeze -----
+before loop:       31810583
+right after send:  31866610
+5 seconds later:   31866610   (frozen: loop ended)
+
+----- s2 parse of 0x1212 packet (5-byte header read as 4) -----
+--
+[13:41:01.660] [bmv2] [D] [thread 43856] [5.0] [cxt 0] Parser 'parser' entering state 'parse_myTunnel'
+[13:41:01.660] [bmv2] [D] [thread 43856] [5.0] [cxt 0] Extracting header 'myTunnel'
+[13:41:01.660] [bmv2] [D] [thread 43856] [5.0] [cxt 0] Parser state 'parse_myTunnel': key is 0800
+[13:41:01.660] [bmv2] [T] [thread 43856] [5.0] [cxt 0] Bytes parsed: 18
+--
+[13:41:01.664] [bmv2] [D] [thread 43856] [6.0] [cxt 0] Parser 'parser' entering state 'parse_myTunnel'
+[13:41:01.664] [bmv2] [D] [thread 43856] [6.0] [cxt 0] Extracting header 'myTunnel'
+[13:41:01.664] [bmv2] [D] [thread 43856] [6.0] [cxt 0] Parser state 'parse_myTunnel': key is 0800
+[13:41:01.664] [bmv2] [T] [thread 43856] [6.0] [cxt 0] Bytes parsed: 18
+--
+[13:41:01.666] [bmv2] [D] [thread 43856] [7.0] [cxt 0] Parser 'parser' entering state 'parse_myTunnel'
+[13:41:01.666] [bmv2] [D] [thread 43856] [7.0] [cxt 0] Extracting header 'myTunnel'
+[13:41:01.666] [bmv2] [D] [thread 43856] [7.0] [cxt 0] Parser state 'parse_myTunnel': key is 0800
+[13:41:01.667] [bmv2] [T] [thread 43856] [7.0] [cxt 0] Bytes parsed: 18
+--
+[13:41:01.669] [bmv2] [D] [thread 43856] [8.0] [cxt 0] Parser 'parser' entering state 'parse_myTunnel'
+[13:41:01.669] [bmv2] [D] [thread 43856] [8.0] [cxt 0] Extracting header 'myTunnel'
+[13:41:01.669] [bmv2] [D] [thread 43856] [8.0] [cxt 0] Parser state 'parse_myTunnel': key is 0800
+[13:41:01.669] [bmv2] [T] [thread 43856] [8.0] [cxt 0] Bytes parsed: 18

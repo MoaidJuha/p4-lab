@@ -1,0 +1,15 @@
+Prediction (written before running the mixed rollout):
+s1 runs the new program (5-byte tunnel header with hop_limit).
+s2 runs tunnel_v1.p4 (4-byte tunnel header, no hop_limit).
+
+Delivery (--tunnel 2): s2 will parse only 4 bytes as the tunnel header, then
+start parsing the IPv4 header one byte early, at the hop_limit byte. It will
+still read dst_id=2 correctly and forward to port 3, but it will recompute
+the IPv4 checksum over shifted bytes, so the packet arriving at h2 may fail
+its checksum. If it arrives, the tunnel header will look normal (5 bytes)
+because the bit-level layout happens to realign on the way out.
+
+Loop (--tunnel 3): s1 still decrements hop_limit, but s2 does not -- the old
+program has no such field. So the packet crosses s1 about 8 times before
+dropping at s1, and the loop should end there, just more slowly (it costs
+one s1 hop per s1->s2->s1 round trip).
