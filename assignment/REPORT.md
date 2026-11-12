@@ -194,11 +194,8 @@ chip's finite field vector is not.
 
 ## AI use
 
-Level 3 (Open). I used an AI assistant to help draft the hop-limit check in
-`tunnel.p4`, to scaffold the Scapy changes in `send.py` / `receive.py`, and to help
-write this report in a form that matches the assignment's expectations. I read and
-tested every change, ran every command shown in the evidence files myself, and
-understand the mechanisms described in sections 1, 2, 5b, 5c and 5d.
+Level 3 (Open)
+
 
 ## Evidence files
 
